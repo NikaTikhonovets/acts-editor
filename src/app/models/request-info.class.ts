@@ -1,6 +1,7 @@
 import { Column, Months } from '@enums';
 import { Driver } from './driver.class';
 import { convert as convertNumberToWordsRu } from 'number-to-words-ru';
+import { Executor } from './executor.class';
 
 export class RequestInfo {
   public clientInfo: string;
@@ -10,8 +11,9 @@ export class RequestInfo {
   public driver: Driver;
   public request: string;
   public date: Date;
+  public executor: Executor;
 
-  constructor(item: any, driver: Driver, clientInfo: string) {
+  constructor(item: any, driver: Driver, clientInfo: string, executor: Executor) {
     this.destination = item[Column.DESTINATION];
     this.requestNumber = item[Column.DOC_NUMBER];
     this.price = item[Column.PRICE];
@@ -19,6 +21,7 @@ export class RequestInfo {
     this.driver = driver;
     this.clientInfo = clientInfo;
     this.date = RequestInfo.excelDateToJSDate(item[Column.DATE]);
+    this.executor = executor;
   }
 
   public get priceWords(): string {

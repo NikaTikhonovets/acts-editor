@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { DocumentService, ExcelParserService } from '@services';
-import { Driver } from '@models';
+import { Driver, Executor } from '@models';
 
 @Component({
   selector: 'app-drivers-list',
@@ -15,9 +15,11 @@ export class DriversListComponent implements OnInit {
   public drivers: Driver[] = [];
   public managers: string[] = [];
   public clients: {[key: string]: string} = {};
+  public executors: {[key: string]: Executor} = {};
   public driversByManager: {[key: string]: Driver[]} = {};
   public selectedDrivers: string[] = [];
   public isSuccessGenerated: boolean = false;
+  public inProgress: boolean = false;
 
   constructor(private readonly parserService: ExcelParserService,
               private readonly documentService: DocumentService) {}
@@ -27,10 +29,11 @@ export class DriversListComponent implements OnInit {
       return;
     }
 
-    const {drivers, managers, clients} = this.parserService.parseDocument(this.uploadedDocument);
+    const {drivers, managers, clients, executors} = this.parserService.parseDocument(this.uploadedDocument);
     this.drivers = drivers;
     this.managers = managers;
     this.clients = clients;
+    this.executors = executors;
     this.managers.forEach((manager: string) => {
       this.driversByManager[manager] = this.drivers.filter((driver: Driver) => driver.manager === manager);
     })
@@ -54,15 +57,17 @@ export class DriversListComponent implements OnInit {
       return;
     }
 
+    this.inProgress = true;
     const drivers: {[key: string]: Driver} = {};
     this.drivers
       .filter((driver: Driver) => this.selectedDrivers.includes(driver.shortName))
       .forEach((driver: Driver) => drivers[driver.shortName] = driver);
 
-    const items = this.parserService.getRequests(this.uploadedDocument, drivers, this.clients);
+    const items = this.parserService.getRequests(this.uploadedDocument, drivers, this.clients, this.executors);
 
     this.documentService.createActs(items).then(() => {
       this.isSuccessGenerated = true;
+      this.inProgress = false;
     });
   }
 

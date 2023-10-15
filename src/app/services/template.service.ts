@@ -19,6 +19,18 @@ export class TemplateService {
       '{{DAY}}': requestInfo.day,
       '{{MONTH}}': requestInfo.month,
       '{{YEAR}}': requestInfo.date.getFullYear().toString(),
+      '{{EXECUTOR_NAME}}': requestInfo.executor.name,
+      '{{EXECUTOR_ADDRESS}}': requestInfo.executor.address,
+      '{{EXECUTOR_PHONES}}': requestInfo.executor.phones,
+      '{{EXECUTOR_MAIL}}': requestInfo.executor.mail,
+      '{{EXECUTOR_INN}}': requestInfo.executor.inn,
+      '{{EXECUTOR_ID}}': requestInfo.executor.id,
+      '{{EXECUTOR_OGRN}}': requestInfo.executor.ogrn,
+      '{{EXECUTOR_ACCOUNT_R}}': requestInfo.executor.accountR,
+      '{{EXECUTOR_ACCOUNT_C}}': requestInfo.executor.accountC,
+      '{{EXECUTOR_BANK}}': requestInfo.executor.bank,
+      '{{EXECUTOR_BIC}}': requestInfo.executor.bic,
+      '{{EXECUTOR_DIRECTOR}}': requestInfo.executor.director,
     }
   }
 }

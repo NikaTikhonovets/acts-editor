@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Column, Page } from '@enums';
-import { Driver, RequestInfo } from '@models';
-import { StorageService } from './storage.service';
+import { Driver, Executor, RequestInfo } from '@models';
+import { DocumentInfo } from '../interfaces/document-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,25 +10,20 @@ import { StorageService } from './storage.service';
 export class ExcelParserService {
   private readonly unreadyStatus: string = 'не созданы';
 
-  constructor(private readonly storageService: StorageService) { }
-
-  public parseDocument(excelDocument: XLSX.WorkBook): { drivers: Driver[], clients: {[key: string]: string}, managers: string[] } {
-    this.storageService.managers = this.getAllManagers(excelDocument);
-    this.storageService.drivers = this.getAllDrivers(excelDocument);
-    this.storageService.clients = this.getAllClients(excelDocument);
-
+  public parseDocument(excelDocument: XLSX.WorkBook): DocumentInfo {
     return {
-      managers: this.storageService.managers,
-      drivers: this.storageService.drivers,
-      clients: this.storageService.clients
-    }
+      managers: this.getAllManagers(excelDocument),
+      drivers: this.getAllDrivers(excelDocument),
+      clients: this.getAllClients(excelDocument),
+      executors: this.getAllExecutors(excelDocument),
+    };
   }
 
-  public getRequests(excelDocument: XLSX.WorkBook, drivers: {[key: string]: Driver}, clients: {[key: string]: string}): RequestInfo[] {
+  public getRequests(excelDocument: XLSX.WorkBook, drivers: {[key: string]: Driver}, clients: {[key: string]: string}, executors: {[key: string]: Executor}): RequestInfo[] {
     const items: RequestInfo[] = [];
 
     Object.keys(drivers).forEach(driverName => {
-      const sheetName = excelDocument.SheetNames.find((sheetName: string) => sheetName.toLowerCase().includes(drivers[driverName]?.lastName.toLowerCase()));
+      const sheetName = excelDocument.SheetNames.find((sheetName: string) => this.handleName(sheetName).includes(this.handleName(drivers[driverName].shortName)));
 
       if (sheetName) {
         const sheetData: XLSX.WorkSheet = excelDocument.Sheets[sheetName];
@@ -37,7 +32,7 @@ export class ExcelParserService {
           .filter((item: {[key: string]: string}) => {
             return Object.keys(item).includes(Column.IS_READY) && item[Column.IS_READY] === this.unreadyStatus;
           }).map((item: any) => {
-            return new RequestInfo(item, drivers[driverName], clients[item[Column.CLIENT]]);
+            return new RequestInfo(item, drivers[driverName], clients[item[Column.CLIENT]], executors[item[Column.EXECUTOR]]);
           });
 
         items.push(...fileItems);
@@ -73,5 +68,23 @@ export class ExcelParserService {
     const managerData = XLSX.utils.sheet_to_json<{[key: string]: string}>(sheetManagersData);
 
     return managerData.map((item: any) => item[Column.FULL_NAME])
+  }
+
+  private getAllExecutors(excelDocument: XLSX.WorkBook): {[key: string]: Executor} {
+    const sheetExecutorsData: XLSX.WorkSheet = excelDocument.Sheets[Page.EXECUTORS];
+    const executorsData = XLSX.utils.sheet_to_json<{[key: string]: string}>(sheetExecutorsData);
+    const executors: {[key: string]: Executor} = {};
+
+    executorsData.forEach((item: any) => {
+      const executor: Executor = new Executor(item);
+
+      executors[executor.name] = executor;
+    });
+
+    return executors;
+  }
+
+  private handleName(currentString: string): string {
+    return currentString.trim().toLowerCase().replaceAll(' ', '');
   }
 }
