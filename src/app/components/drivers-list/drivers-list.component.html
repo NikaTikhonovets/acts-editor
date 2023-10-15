@@ -1,0 +1,35 @@
+<ng-container *ngIf="!isSuccessGenerated; else successStep">
+  <button class="secondary" (click)="selectAllDrivers()">Выбрать все</button>
+
+  <div class="manager" *ngFor="let manager of managers; let index = index">
+    <label class="container manager-name">
+      {{manager}}
+      <input type="checkbox" [checked]="checkIsSelectedManager(manager)" (change)="updateSelectedDriversByManager(manager, $event.target)">
+      <span class="checkmark"></span>
+    </label>
+    <div class="drivers">
+    <span *ngFor="let driver of driversByManager[manager]; let index = index">
+      <label class="container">
+        {{driver.fullName}}
+        <input type="checkbox" [checked]="checkSelected(driver)" (change)="updateSelectedDriversByDriver(driver.shortName, $event.target)">
+        <span class="checkmark"></span>
+      </label>
+    </span>
+    </div>
+  </div>
+
+  <button class="generate-button"
+          [disabled]="!selectedDrivers.length"
+          (click)="generateDocs()">
+    Сгенерировать документы
+  </button>
+</ng-container>
+
+<ng-template #successStep>
+  <div class="success">
+    <p>Документы сгенерированы успешно!</p>
+    <button (click)="return()">
+      Вернуться к загрузке файла
+    </button>
+  </div>
+</ng-template>

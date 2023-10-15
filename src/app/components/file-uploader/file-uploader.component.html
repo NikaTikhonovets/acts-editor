@@ -1,0 +1,15 @@
+<ng-container *ngIf="!inProgress; else loaderTemplate">
+  <div class="drop-zone" appDrop (files)="importFile($event.file)">
+    <p>Перетащите файл сюда</p>
+    <p>или</p>
+
+    <label class="custom-file-upload">
+      <input type="file" (change)="uploadFile($event)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+      Загрузите файл
+    </label>
+  </div>
+</ng-container>
+
+<ng-template #loaderTemplate>
+  <app-loader></app-loader>
+</ng-template>

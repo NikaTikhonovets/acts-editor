@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+@import './assets/styles/colors';
+@import './assets/styles/button';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&display=swap');
+
+*, *::before, *::after {
+  font-family: Montserrat, sans-serif;
+  box-sizing: border-box;
+}
+
+body, p, span {
+  padding: 0;
+  margin: 0;
+  color: var(--dark);
+}

@@ -1,0 +1,97 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 70vw;
+  gap: 30px;
+}
+
+.manager {
+  display: flex;
+  width: 100%;
+
+  &-name {
+    width: calc(40% - 30px);
+    padding-right: 30px;
+    font-weight: bold;
+  }
+
+  .drivers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 60%;
+  }
+}
+
+.generate-button {
+  align-self: flex-end;
+  margin-top: 20px;
+}
+
+.success {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  padding: 30px 0;
+
+  p {
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+
+  & input {
+    display: none;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    background-color: var(--white);
+
+    &::after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 8px;
+      top: 4px;
+      width: 6px;
+      height: 10px;
+      border: solid var(--white);
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+  }
+
+  &:hover input ~ .checkmark {
+    background-color: var(--bg);
+  }
+
+  input:checked {
+    & ~ .checkmark {
+      background-color: var(--primary);
+
+      &:after {
+        display: block;
+      }
+    }
+  }
+}
+
