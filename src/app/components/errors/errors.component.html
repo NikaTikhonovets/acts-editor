@@ -1,0 +1,20 @@
+<h2>Некорректный файл</h2>
+<p class="description">Заполните пустые ячейки</p>
+<table>
+  <tr>
+    <th>Страница</th>
+    <th>Строка</th>
+    <th>Пустые ячейки</th>
+  </tr>
+  <tr *ngFor="let error of errors; let index = index">
+    <td>{{error.sheetName}}</td>
+    <td>{{error.rowId}}</td>
+    <td>
+      <p *ngFor="let item of error.emptyColumns; let index = index">{{item}}</p>
+    </td>
+  </tr>
+</table>
+
+<button (click)="return.emit()">
+  Вернуться к загрузке файла
+</button>

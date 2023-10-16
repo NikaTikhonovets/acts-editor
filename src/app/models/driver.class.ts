@@ -1,4 +1,5 @@
-import { Column } from '@enums';
+import { Column, Page } from '@enums';
+import { ErrorInfo } from '../interfaces/error-info.interface';
 
 export class Driver {
   public firstName: string;
@@ -6,8 +7,11 @@ export class Driver {
   public patronymic: string;
   public car: string;
   public manager: string;
+  public error: ErrorInfo | null;
+  private readonly requiredFields: Column[] = [Column.FIRST_NAME, Column.LAST_NAME, Column.PATRONYMIC, Column.CAR, Column.MANAGER];
 
   constructor(driver: any) {
+    this.error = this.getErrors(driver);
     this.firstName = driver[Column.FIRST_NAME];
     this.lastName = driver[Column.LAST_NAME];
     this.patronymic = driver[Column.PATRONYMIC];
@@ -23,5 +27,14 @@ export class Driver {
     const [nameFirstLetter]: string = this.firstName;
     const [patronymicFirstLetter]: string = this.patronymic;
     return `${this.lastName} ${nameFirstLetter}.${patronymicFirstLetter}.`;
+  }
+
+  public getErrors(docDriver: any): ErrorInfo | null {
+    const emptyColumns: Column[] = this.requiredFields.filter((field: Column) => !docDriver[field]);
+    return emptyColumns?.length ? {
+      sheetName: Page.DRIVERS,
+      rowId: docDriver.__rowNum__,
+      emptyColumns
+    } : null;
   }
 }

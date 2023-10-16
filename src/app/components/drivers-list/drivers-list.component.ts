@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { DocumentService, ExcelParserService } from '@services';
 import { Driver, Executor } from '@models';
+import { ErrorInfo } from '../../interfaces/error-info.interface';
+import { error } from '@angular/compiler-cli/src/transformers/util';
 
 @Component({
   selector: 'app-drivers-list',
@@ -20,6 +22,7 @@ export class DriversListComponent implements OnInit {
   public selectedDrivers: string[] = [];
   public isSuccessGenerated: boolean = false;
   public inProgress: boolean = false;
+  public parsingErrors: ErrorInfo[] = [];
 
   constructor(private readonly parserService: ExcelParserService,
               private readonly documentService: DocumentService) {}
@@ -29,7 +32,13 @@ export class DriversListComponent implements OnInit {
       return;
     }
 
-    const {drivers, managers, clients, executors} = this.parserService.parseDocument(this.uploadedDocument);
+    const {drivers, managers, clients, executors, errors} = this.parserService.parseDocument(this.uploadedDocument);
+
+    if (errors?.length) {
+      this.parsingErrors = errors;
+      return;
+    }
+
     this.drivers = drivers;
     this.managers = managers;
     this.clients = clients;

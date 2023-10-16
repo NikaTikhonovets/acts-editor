@@ -1,14 +1,21 @@
 <ng-container *ngIf="!inProgress; else loaderTemplate">
   <ng-container *ngIf="!isSuccessGenerated; else successStep">
-    <button class="secondary" (click)="selectAllDrivers()">Выбрать все</button>
 
-    <div class="manager" *ngFor="let manager of managers; let index = index">
-      <label class="container manager-name">
-        {{manager}}
-        <input type="checkbox" [checked]="checkIsSelectedManager(manager)" (change)="updateSelectedDriversByManager(manager, $event.target)">
-        <span class="checkmark"></span>
-      </label>
-      <div class="drivers">
+    <app-errors *ngIf="parsingErrors?.length; else listStep"
+                [errors]="parsingErrors"
+                (return)="return()">
+    </app-errors>
+
+    <ng-template #listStep>
+      <button class="secondary" (click)="selectAllDrivers()">Выбрать все</button>
+
+      <div class="manager" *ngFor="let manager of managers; let index = index">
+        <label class="container manager-name">
+          {{manager}}
+          <input type="checkbox" [checked]="checkIsSelectedManager(manager)" (change)="updateSelectedDriversByManager(manager, $event.target)">
+          <span class="checkmark"></span>
+        </label>
+        <div class="drivers">
     <span *ngFor="let driver of driversByManager[manager]; let index = index">
       <label class="container">
         {{driver.fullName}}
@@ -16,14 +23,16 @@
         <span class="checkmark"></span>
       </label>
     </span>
+        </div>
       </div>
-    </div>
 
-    <button class="generate-button"
-            [disabled]="!selectedDrivers.length"
-            (click)="generateDocs()">
-      Сгенерировать документы
-    </button>
+      <button class="generate-button"
+              [disabled]="!selectedDrivers.length"
+              (click)="generateDocs()">
+        Сгенерировать документы
+      </button>
+    </ng-template>
+
   </ng-container>
 </ng-container>
 

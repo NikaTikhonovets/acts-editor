@@ -4,8 +4,10 @@ import { AppComponent } from './app.component';
 import { FileUploaderComponent } from '@components/file-uploader/file-uploader.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DropDirective } from './drop.directive';
-import { LoaderComponent } from './components/loader/loader.component';
-import { DriversListComponent } from './components/drivers-list/drivers-list.component';
+import { LoaderComponent } from '@components/loader/loader.component';
+import { DriversListComponent } from '@components/drivers-list/drivers-list.component';
+import { ErrorsComponent } from '@components/errors/errors.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -13,11 +15,13 @@ import { DriversListComponent } from './components/drivers-list/drivers-list.com
     FileUploaderComponent,
     DropDirective,
     LoaderComponent,
-    DriversListComponent
+    DriversListComponent,
+    ErrorsComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule
   ],
   bootstrap: [AppComponent]
 })

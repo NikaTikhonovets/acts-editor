@@ -12,6 +12,7 @@ export class RequestInfo {
   public request: string;
   public date: Date;
   public executor: Executor;
+  public rowId: string;
 
   constructor(item: any, driver: Driver, clientInfo: string, executor: Executor) {
     this.destination = item[Column.DESTINATION];
@@ -22,6 +23,7 @@ export class RequestInfo {
     this.clientInfo = clientInfo;
     this.date = RequestInfo.excelDateToJSDate(item[Column.DATE]);
     this.executor = executor;
+    this.rowId = item.__rowNum__;
   }
 
   public get priceWords(): string {
