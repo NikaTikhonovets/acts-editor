@@ -3,7 +3,6 @@ import * as XLSX from 'xlsx';
 import { DocumentService, ExcelParserService } from '@services';
 import { Driver, Executor } from '@models';
 import { ErrorInfo } from '../../interfaces/error-info.interface';
-import { error } from '@angular/compiler-cli/src/transformers/util';
 
 @Component({
   selector: 'app-drivers-list',
@@ -73,6 +72,12 @@ export class DriversListComponent implements OnInit {
       .forEach((driver: Driver) => drivers[driver.shortName] = driver);
 
     const items = this.parserService.getRequests(this.uploadedDocument, drivers, this.clients, this.executors);
+    this.parsingErrors = this.parserService.documentErrors;
+
+    if (this.parsingErrors?.length) {
+      this.inProgress = false;
+      return;
+    }
 
     this.documentService.createActs(items).then(() => {
       this.isSuccessGenerated = true;

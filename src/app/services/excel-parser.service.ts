@@ -37,12 +37,16 @@ export class ExcelParserService {
           .filter((item: {[key: string]: string}) => {
             return Object.keys(item).includes(Column.IS_READY) && item[Column.IS_READY] === this.unreadyStatus;
           }).map((item: any) => {
-            return new RequestInfo(item, drivers[driverName], clients[item[Column.CLIENT]], executors[item[Column.EXECUTOR]]);
+            return new RequestInfo(item, drivers[driverName], clients[item[Column.CLIENT]], executors[item[Column.EXECUTOR]], sheetName);
           });
 
         items.push(...fileItems);
       }
     });
+
+    this.documentErrors = items
+      .filter((item: RequestInfo) => !!item.error)
+      .map((item: RequestInfo) => item.error) as ErrorInfo[];
 
     return items;
   }

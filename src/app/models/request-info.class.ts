@@ -2,6 +2,7 @@ import { Column, Months } from '@enums';
 import { Driver } from './driver.class';
 import { convert as convertNumberToWordsRu } from 'number-to-words-ru';
 import { Executor } from './executor.class';
+import { ErrorInfo } from '../interfaces/error-info.interface';
 
 export class RequestInfo {
   public clientInfo: string;
@@ -12,9 +13,13 @@ export class RequestInfo {
   public request: string;
   public date: Date;
   public executor: Executor;
-  public rowId: string;
+  public error: ErrorInfo | null;
+  private readonly requiredFields: Column[] = [
+    Column.DESTINATION, Column.DOC_NUMBER, Column.PRICE, Column.REQUEST,
+    Column.DATE, Column.CLIENT, Column.EXECUTOR];
 
-  constructor(item: any, driver: Driver, clientInfo: string, executor: Executor) {
+  constructor(item: any, driver: Driver, clientInfo: string, executor: Executor, sheetName: string) {
+    this.error = this.getErrors(item, sheetName);
     this.destination = item[Column.DESTINATION];
     this.requestNumber = item[Column.DOC_NUMBER];
     this.price = item[Column.PRICE];
@@ -23,7 +28,6 @@ export class RequestInfo {
     this.clientInfo = clientInfo;
     this.date = RequestInfo.excelDateToJSDate(item[Column.DATE]);
     this.executor = executor;
-    this.rowId = item.__rowNum__;
   }
 
   public get priceWords(): string {
@@ -54,5 +58,14 @@ export class RequestInfo {
     const minutes = Math.floor(total_seconds / 60) % 60;
 
     return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
+  }
+
+  public getErrors(request: any, sheetName: string): ErrorInfo | null {
+    const emptyColumns: Column[] = this.requiredFields.filter((field: Column) => !request[field]);
+    return emptyColumns?.length ? {
+      sheetName,
+      rowId: request.__rowNum__,
+      emptyColumns
+    } : null;
   }
 }
