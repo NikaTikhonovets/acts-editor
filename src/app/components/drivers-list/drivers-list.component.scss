@@ -5,6 +5,13 @@
   justify-content: center;
   width: 70vw;
   gap: 30px;
+
+  .error-message {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
 }
 
 .manager {

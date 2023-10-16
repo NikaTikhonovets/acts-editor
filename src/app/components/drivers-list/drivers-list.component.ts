@@ -22,6 +22,7 @@ export class DriversListComponent implements OnInit {
   public isSuccessGenerated: boolean = false;
   public inProgress: boolean = false;
   public parsingErrors: ErrorInfo[] = [];
+  public isEmptyRequests: boolean = false;
 
   constructor(private readonly parserService: ExcelParserService,
               private readonly documentService: DocumentService) {}
@@ -74,8 +75,9 @@ export class DriversListComponent implements OnInit {
     const items = this.parserService.getRequests(this.uploadedDocument, drivers, this.clients, this.executors);
     this.parsingErrors = this.parserService.documentErrors;
 
-    if (this.parsingErrors?.length) {
+    if (this.parsingErrors?.length || !items?.length) {
       this.inProgress = false;
+      this.isEmptyRequests = !items?.length;
       return;
     }
 
