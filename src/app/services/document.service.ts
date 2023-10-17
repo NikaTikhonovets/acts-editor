@@ -39,14 +39,8 @@ export class DocumentService {
         this.getDocsByTemplate('/assets/doc-templates/act-template.docx', items, 'акт'),
         this.getDocsByTemplate('/assets/doc-templates/bill-template.docx', items, 'счет')
       ]).then(([acts, bills]) => {
-        const actsFolder = zip.folder("акты") as JSZip;
-        acts.forEach((act) => {
-          actsFolder.file(act.name, act.content);
-        });
-
-        const billsFolder = zip.folder("счета") as JSZip;
-        bills.forEach((act) => {
-          billsFolder.file(act.name, act.content);
+        [...acts, ...bills].forEach((act) => {
+          zip.file(act.name, act.content);
         });
 
         zip.generateAsync({type: "blob"})
@@ -76,7 +70,7 @@ export class DocumentService {
 
           items.forEach((item: RequestInfo) => {
             const act = this.createAct(content, item);
-            docs.push({name: `${namePart} ${item.requestNumber}.docx`, content: act});
+            docs.push({name: `${item.requestNumber} ${namePart}.docx`, content: act});
           });
 
           resolve(docs);
