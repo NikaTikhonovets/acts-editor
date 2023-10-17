@@ -39,7 +39,7 @@ export class RequestInfo {
   }
 
   public get day(): string {
-    const requestDay = this.date.getDay().toString();
+    const requestDay = this.date.getDate().toString();
 
     return requestDay?.length === 1 ? `0${requestDay}` : requestDay;
   }

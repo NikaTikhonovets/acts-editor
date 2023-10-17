@@ -24,6 +24,6 @@ export enum Column {
   ACCOUNT_C = 'Корр. счет',
   BIC = 'БИК',
   BANK = 'Банк',
-  ID = 'ID',
   DIRECTOR = 'Ген. директор',
+  CPP = 'КПП',
 }

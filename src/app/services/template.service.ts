@@ -24,7 +24,7 @@ export class TemplateService {
       '{{EXECUTOR_PHONES}}': requestInfo.executor.phones,
       '{{EXECUTOR_MAIL}}': requestInfo.executor.mail,
       '{{EXECUTOR_INN}}': requestInfo.executor.inn,
-      '{{EXECUTOR_ID}}': requestInfo.executor.id,
+      '{{EXECUTOR_CPP}}': requestInfo.executor.cpp,
       '{{EXECUTOR_OGRN}}': requestInfo.executor.ogrn,
       '{{EXECUTOR_ACCOUNT_R}}': requestInfo.executor.accountR,
       '{{EXECUTOR_ACCOUNT_C}}': requestInfo.executor.accountC,

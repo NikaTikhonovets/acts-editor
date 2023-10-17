@@ -12,12 +12,12 @@ export class Executor {
   public accountC: string;
   public bic: string;
   public bank: string;
-  public id: string;
   public director: string;
+  public cpp: string;
   public error: ErrorInfo | null;
   private readonly requiredFields: Column[] = [
     Column.NAME, Column.ADDRESS, Column.PHONES, Column.MAIL, Column.INN, Column.OGRN,
-    Column.ACCOUNT_R, Column.ACCOUNT_C, Column.BIC, Column.BANK, Column.ID, Column.DIRECTOR];
+    Column.ACCOUNT_R, Column.ACCOUNT_C, Column.BIC, Column.BANK, Column.DIRECTOR];
 
   constructor(item: any) {
     this.error = this.getErrors(item);
@@ -31,8 +31,8 @@ export class Executor {
     this.accountC = item[Column.ACCOUNT_C];
     this.bic = item[Column.BIC];
     this.bank = item[Column.BANK];
-    this.id = item[Column.ID];
     this.director = item[Column.DIRECTOR];
+    this.cpp = item[Column.CPP] ? `КПП ${item[Column.CPP]}` : '';
   }
 
   public getErrors(item: any): ErrorInfo | null {
