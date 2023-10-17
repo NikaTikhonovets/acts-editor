@@ -12,21 +12,21 @@
         <button class="secondary" (click)="selectAllDrivers()">Выбрать все</button>
 
         <div class="manager" *ngFor="let manager of managers; let index = index">
-          <label class="container manager-name">
+          <label class="container manager-name" *ngIf="driversByManager[manager]?.length">
             {{manager}}
             <input type="checkbox" [checked]="checkIsSelectedManager(manager)"
                    (change)="updateSelectedDriversByManager(manager, $event.target)">
             <span class="checkmark"></span>
           </label>
           <div class="drivers">
-          <span *ngFor="let driver of driversByManager[manager]; let index = index">
-            <label class="container">
-              {{driver.fullName}}
-              <input type="checkbox" [checked]="checkSelected(driver)"
-                     (change)="updateSelectedDriversByDriver(driver.shortName, $event.target)">
-              <span class="checkmark"></span>
-            </label>
-          </span>
+            <span *ngFor="let driver of driversByManager[manager]; let index = index">
+              <label class="container">
+                {{driver.fullName}}
+                <input type="checkbox" [checked]="checkSelected(driver)"
+                       (change)="updateSelectedDriversByDriver(driver.shortName, $event.target)">
+                <span class="checkmark"></span>
+              </label>
+            </span>
           </div>
         </div>
 

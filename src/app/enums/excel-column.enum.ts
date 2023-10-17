@@ -13,7 +13,7 @@ export enum Column {
   IS_READY = 'Готовность актов',
   FULL_NAME = 'ФИО',
   MANAGER = 'Менеджер',
-  DATE = 'Дата и время загрузки',
+  DATE = 'Дата и время выгрузки',
   EXECUTOR = 'Исполнитель',
   ADDRESS = 'Адрес',
   PHONES = 'Телефоны',
