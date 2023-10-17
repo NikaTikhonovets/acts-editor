@@ -33,7 +33,7 @@ export class Driver {
     const emptyColumns: Column[] = this.requiredFields.filter((field: Column) => !docDriver[field]);
     return emptyColumns?.length ? {
       sheetName: Page.DRIVERS,
-      rowId: docDriver.__rowNum__,
+      rowId: docDriver.__rowNum__ + 1,
       emptyColumns
     } : null;
   }

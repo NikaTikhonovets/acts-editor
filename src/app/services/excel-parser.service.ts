@@ -76,7 +76,7 @@ export class ExcelParserService {
         if (emptyColumns?.length) {
           this.documentErrors.push({
             sheetName: Page.CLIENTS,
-            rowId: item.__rowNum__,
+            rowId: item.__rowNum__ + 1,
             emptyColumns
           });
         }

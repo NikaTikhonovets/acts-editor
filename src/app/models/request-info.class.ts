@@ -12,11 +12,13 @@ export class RequestInfo {
   public driver: Driver;
   public request: string;
   public date: Date;
+  public startDate: string;
+  public endDate: string;
   public executor: Executor;
   public error: ErrorInfo | null;
   private readonly requiredFields: Column[] = [
     Column.DESTINATION, Column.DOC_NUMBER, Column.PRICE, Column.REQUEST,
-    Column.DATE, Column.CLIENT, Column.EXECUTOR];
+    Column.START_DATE, Column.END_DATE, Column.CLIENT, Column.EXECUTOR];
 
   constructor(item: any, driver: Driver, clientInfo: string, executor: Executor, sheetName: string) {
     this.error = this.getErrors(item, sheetName);
@@ -26,7 +28,9 @@ export class RequestInfo {
     this.request = item[Column.REQUEST];
     this.driver = driver;
     this.clientInfo = clientInfo;
-    this.date = RequestInfo.excelDateToJSDate(item[Column.DATE]);
+    this.date = RequestInfo.excelDateToJSDate(item[Column.END_DATE]);
+    this.startDate = this.getFormattedDate(RequestInfo.excelDateToJSDate(item[Column.START_DATE]));
+    this.endDate = this.getFormattedDate(RequestInfo.excelDateToJSDate(item[Column.END_DATE]));
     this.executor = executor;
   }
 
@@ -41,7 +45,7 @@ export class RequestInfo {
   public get day(): string {
     const requestDay = this.date.getDate().toString();
 
-    return requestDay?.length === 1 ? `0${requestDay}` : requestDay;
+    return this.handleDate(requestDay);
   }
 
   private static excelDateToJSDate(serial: number): Date {
@@ -60,11 +64,23 @@ export class RequestInfo {
     return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
   }
 
+  private getFormattedDate(currentDate: Date): string {
+    const day = this.handleDate(currentDate.getDate().toString());
+    const month = this.handleDate((currentDate.getMonth() + 1).toString());
+    const year = currentDate.getFullYear().toString();
+
+    return `${day}.${month}.${year}`;
+  }
+
+  private handleDate(day: string): string {
+    return day?.length === 1 ? `0${day}` : day;
+  }
+
   public getErrors(request: any, sheetName: string): ErrorInfo | null {
     const emptyColumns: Column[] = this.requiredFields.filter((field: Column) => !request[field]);
     return emptyColumns?.length ? {
       sheetName,
-      rowId: request.__rowNum__,
+      rowId: request.__rowNum__ + 1,
       emptyColumns
     } : null;
   }

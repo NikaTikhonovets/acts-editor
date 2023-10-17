@@ -39,7 +39,7 @@ export class Executor {
     const emptyColumns: Column[] = this.requiredFields.filter((field: Column) => !item[field]);
     return emptyColumns?.length ? {
       sheetName: Page.EXECUTORS,
-      rowId: item.__rowNum__,
+      rowId: item.__rowNum__ + 1,
       emptyColumns
     } : null;
   }

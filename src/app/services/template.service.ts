@@ -19,6 +19,8 @@ export class TemplateService {
       '{{DAY}}': requestInfo.day,
       '{{MONTH}}': requestInfo.month,
       '{{YEAR}}': requestInfo.date.getFullYear().toString(),
+      '{{START_DATE}}': requestInfo.startDate,
+      '{{END_DATE}}': requestInfo.endDate,
       '{{EXECUTOR_NAME}}': requestInfo.executor.name,
       '{{EXECUTOR_ADDRESS}}': requestInfo.executor.address,
       '{{EXECUTOR_PHONES}}': requestInfo.executor.phones,
