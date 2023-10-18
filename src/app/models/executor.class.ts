@@ -3,6 +3,7 @@ import { ErrorInfo } from '../interfaces/error-info.interface';
 
 export class Executor {
   public name: string;
+  public actualName: string;
   public address: string;
   public phones: string;
   public mail: string;
@@ -16,12 +17,13 @@ export class Executor {
   public cpp: string;
   public error: ErrorInfo | null;
   private readonly requiredFields: Column[] = [
-    Column.NAME, Column.ADDRESS, Column.PHONES, Column.MAIL, Column.INN, Column.OGRN,
+    Column.NAME, Column.ACTUAL_NAME, Column.ADDRESS, Column.PHONES, Column.MAIL, Column.INN, Column.OGRN,
     Column.ACCOUNT_R, Column.ACCOUNT_C, Column.BIC, Column.BANK, Column.DIRECTOR];
 
   constructor(item: any) {
     this.error = this.getErrors(item);
     this.name = item[Column.NAME];
+    this.actualName = item[Column.ACTUAL_NAME];
     this.address = item[Column.ADDRESS];
     this.phones = item[Column.PHONES];
     this.mail = item[Column.MAIL];

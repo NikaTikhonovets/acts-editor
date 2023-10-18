@@ -16,6 +16,7 @@ export enum Column {
   START_DATE = 'Дата и время загрузки',
   END_DATE = 'Дата и время выгрузки',
   EXECUTOR = 'Исполнитель',
+  ACTUAL_NAME = 'Название для документов',
   ADDRESS = 'Адрес',
   PHONES = 'Телефоны',
   MAIL = 'Почта',

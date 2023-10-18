@@ -21,7 +21,7 @@ export class TemplateService {
       '{{YEAR}}': requestInfo.date.getFullYear().toString(),
       '{{START_DATE}}': requestInfo.startDate,
       '{{END_DATE}}': requestInfo.endDate,
-      '{{EXECUTOR_NAME}}': requestInfo.executor.name,
+      '{{EXECUTOR_NAME}}': requestInfo.executor.actualName,
       '{{EXECUTOR_ADDRESS}}': requestInfo.executor.address,
       '{{EXECUTOR_PHONES}}': requestInfo.executor.phones,
       '{{EXECUTOR_MAIL}}': requestInfo.executor.mail,
