@@ -12,9 +12,9 @@ export class Driver {
 
   constructor(driver: any) {
     this.error = this.getErrors(driver);
-    this.firstName = driver[Column.FIRST_NAME];
-    this.lastName = driver[Column.LAST_NAME];
-    this.patronymic = driver[Column.PATRONYMIC];
+    this.firstName = driver[Column.FIRST_NAME]?.trim();
+    this.lastName = driver[Column.LAST_NAME]?.trim();
+    this.patronymic = driver[Column.PATRONYMIC]?.trim();
     this.car = driver[Column.CAR];
     this.manager = driver[Column.MANAGER];
   }
