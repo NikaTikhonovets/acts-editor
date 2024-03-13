@@ -26,9 +26,21 @@ export class FileUploaderComponent {
 
     this.inProgress = true;
     this.documentService.importExcelFile(file).then((excelDocument: XLSX.WorkBook) => {
-      this.excelDocument = excelDocument;
-      this.inProgress = false;
-      this.uploadedFile.emit(this.excelDocument);
+      this.updateDocument(excelDocument);
     });
+  }
+
+  public loadFileByUrl(): void {
+    this.inProgress = true;
+
+    this.documentService.getFile().subscribe((excelDocument) => {
+      this.updateDocument(excelDocument);
+    });
+  }
+
+  private updateDocument(excelDocument: XLSX.WorkBook): void {
+    this.excelDocument = excelDocument;
+    this.inProgress = false;
+    this.uploadedFile.emit(this.excelDocument);
   }
 }

@@ -3,10 +3,13 @@
     <p>Перетащите файл сюда</p>
     <p>или</p>
 
-    <label class="custom-file-upload">
-      <input type="file" (change)="uploadFile($event)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
-      Загрузите файл
-    </label>
+    <div class="actions">
+      <label class="custom-file-upload">
+        <input type="file" (change)="uploadFile($event)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+        Загрузите файл
+      </label>
+      <button (click)="loadFileByUrl()">Загрузить файл по ссылке</button>
+    </div>
   </div>
 </ng-container>
 

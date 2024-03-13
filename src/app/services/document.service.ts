@@ -5,6 +5,8 @@ import * as JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { TemplateService } from './template.service';
 import { RequestInfo } from '@models';
+import { HttpClient } from "@angular/common/http";
+import { Observable, switchMap } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,8 @@ import { RequestInfo } from '@models';
 export class DocumentService {
   private readonly xmlDocumentName: string = 'word/document.xml';
 
-  constructor(private readonly templateService: TemplateService) {
+  constructor(private readonly templateService: TemplateService,
+              private readonly http: HttpClient) {
   }
 
   public importExcelFile(file: File): Promise<XLSX.WorkBook> {
@@ -101,5 +104,15 @@ export class DocumentService {
     updatedDocument.file(this.xmlDocumentName, content);
 
     return updatedDocument.files[this.xmlDocumentName];
+  }
+
+  public getFile(): Observable<any> {
+    const key: string = '1n3HN_QPod2FMl0ctkINVRqt_kO4_TImvYdZH2Lkb8Ac';
+    return this.http.get(`https://docs.google.com/spreadsheet/ccc?key=${key}&output=xls`, { responseType: 'blob' as 'json'}).pipe(
+      switchMap((data: any) => {
+        const file = new File([data], 'myFile.xlsx', {type: data.type});
+        return this.importExcelFile(file);
+      })
+    );
   }
 }
